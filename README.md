@@ -1,4 +1,3 @@
-# chess-project
 #include<stdio.h>
 void print_chessboard();
 void fill_chessboard();
@@ -65,9 +64,17 @@ void fill_chessman(){
 	}
 	
 int main(){
+	int i, j;
 	fill_chessman();
 	fill_chessboard();
+	char *Symbol[8][8];
+	for (i=0;i<8;i++)
+	{
+		for (j=0;j<8;i++)
+			Symbol[i][j]=&chessboard[i][j].symbol;
+		}
 	print_chessboard();
+
 
 return 0;
 }
@@ -76,7 +83,7 @@ void print_chessboard(){
 	for (i=7;i>-1;i--)
 	{
 		for (j=7;j>-1;j--)
-			printf("%c",chessboard[j][i].symbol);
+			printf("%s",*Symbol[j][i]);
 		printf("\n");
 		
 	}
