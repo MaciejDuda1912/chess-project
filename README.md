@@ -13,7 +13,7 @@ typedef struct
 }chessman;
 
 chessman pieces[32];
-int k;
+int k, j;
 void fill_chessman(){
 	for  (k=0; k<8;k++)
 		pieces[k]=(chessman){WHITE,PIONEK,"P"};
@@ -62,17 +62,18 @@ void fill_chessman(){
 		chessboard [6][7]=pieces[27];
 		chessboard [7][7]=pieces[25];
 	}
-	
+		char *Symbol[8][8];
+	void get_symbol(){
+		for (k=0;k<8;k++)
+	{
+		for (j=0;j<8;j++)
+			Symbol[k][j]=&chessboard[k][j].symbol;
+}
+	}
 int main(){
-	int i, j;
 	fill_chessman();
 	fill_chessboard();
-	char *Symbol[8][8];
-	for (i=0;i<8;i++)
-	{
-		for (j=0;j<8;i++)
-			Symbol[i][j]=&chessboard[i][j].symbol;
-		}
+	get_symbol();
 	print_chessboard();
 
 
