@@ -50,6 +50,7 @@ void print_chessboard(){
 	int flag=0;
 	for (i=0;i<8;i++)
 	{
+		printf("%d", i+1);
 		for (j=0;j<8;j++){
 			printf("[");
 			flag=0;
@@ -66,6 +67,7 @@ void print_chessboard(){
 		printf("\n");
 
 	}
+	printf("  h  g  f  e  d  c  b  a\n");
 }
 void play(int x){
 	
@@ -74,9 +76,6 @@ void play(int x){
 int main(){
 	int gra=0;
 	fill_chessman();
-	while (gra=0)
-	ruch=1;
-	play(ruch)
 	print_chessboard();
 
 return 0;
