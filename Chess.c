@@ -5,6 +5,7 @@ void print_chessboard();
 void fill_chessman();
 void moves(int p, int r, int s, int o);
 int validate_move_format();
+int validate_move(rowStart, rowEnd, colStart, colEnd);
 
 enum Color { WHITE, BLACK };
 enum Type { PAWN, KNIGHT, BISHOP, QUEEN, ROOK, KING };
@@ -211,12 +212,17 @@ int validate_move_format() {
 }
 
 // FUNKCJA SPRAWDZAJACA LEGALOSC RUCHOW DLA POSZCZEGOLNYCH TYPOW PIONKOW
-int validate_move()
+int validate_move(rowStart, rowEnd, colStart, colEnd)
 {
 	//wektory Y i X
 	int rowDiff = rowStart - rowEnd;
 	int colDiff = colStart - colEnd;
-
+	
+	if (rowDiff==0 && colDiff==0)
+	{
+		printf("you didn't move");
+		return 0;
+	 } 
 
 	/*
 	//Do testow
@@ -230,12 +236,12 @@ int validate_move()
 		//PIONKI
 		if ((pieces[k].y == rowStart && pieces[k].x == colStart) && pieces[k].type == PAWN) 
 		{
-			//Sprwdzenie ilosci pol, o ktore chcemy siê ruszyc
-			if ((rowStart != 1 && rowStart != 6) && rowDiff > 1) {
+			//Sprwdzenie ilosci pol, o ktore chcemy sie ruszyc
+			if ((rowStart != 1 && rowStart != 6) && abs(rowDiff) > 1) {
 				printf("Pawns cannot move more than one space except the first move.\n");
 				return 0;
 			}
-			else if ((rowStart == 1 || rowStart == 6) && rowDiff > 2) {
+			else if ((rowStart == 1 || rowStart == 6) && abs(rowDiff) > 2) {
 				printf("Pawns can move up to two spaces in their first move.\n");
 				return 0;
 			}
@@ -252,14 +258,14 @@ int validate_move()
 			//sprawdzanie, czy pionek nie wejdzie w inna figure
 			if (colDiff == 0) {
 				for (i = 0; i < 32; ++i) {
-					if (pieces[i].y == rowEnd && pieces[i].x == colEnd){
+					if (pieces[i].y == rowEnd && pieces[i].x == colEnd && pieces[i].dead_alive==ALIVE){
 						printf("Pawns do not move like that \n");
 						return 0;
 					}
 				}
 			}
 			
-			//Sprawdzanie, czy pionek moze wykonac ruch po przek¹tnej/w bok
+			//Sprawdzanie, czy pionek moze wykonac ruch po przek1tnej/w bok
 			if (colDiff != 0) {
 				for (i = 0; i < 32; ++i) {
 					if ((pieces[i].x == colEnd && pieces[i].y == rowEnd) && rowDiff != 0) {
@@ -269,7 +275,78 @@ int validate_move()
 				printf("Pawns do not move like that \n");
 				return 0;
 			}
-
+		}
+		//Wie¿e
+		else if ((pieces[k].y == rowStart && pieces[k].x == colStart) && pieces[k].type == ROOK && pieces[k].dead_alive==ALIVE)
+		{
+			if (rowDiff!=0 && colDiff!=0)
+			{
+				printf("rooks don't move like that");
+				return 0;
+			}
+			if (rowDiff==0)
+			{
+				if( colDiff>0)
+				{
+					for(k=1;k<colDiff;k++)
+					{
+						for (i=0;i<32;i++)
+						{
+							if (pieces[i].x==colStart+k && pieces[i].y==rowStart && pieces[i].dead_alive==ALIVE)
+								{
+									printf("there is a piece in the way");
+									return 0;
+								}
+						}
+					}
+				}
+				else
+				{
+					for(k=1;k<abs(colDiff);k++)
+					{
+						for (i=0;i<32;i++)
+						{
+							if (pieces[i].x==colStart-k && pieces[i].y==rowStart && pieces[i].dead_alive==ALIVE)
+								{
+									printf("there is a piece in the way");
+									return 0;
+								}
+						}
+					}
+				}
+			}
+			else
+			{
+				if( rowDiff>0)
+				{
+					for(k=1;k<rowDiff;k++)
+					{
+						for (i=0;i<32;i++)
+						{
+							if (pieces[i].x==colStart && pieces[i].y==rowStart+k && pieces[i].dead_alive==ALIVE)
+								{
+									printf("there is a piece in the way");
+									return 0;
+								}
+						}
+					}
+				}
+				else
+				{
+					for(k=1;k<abs(rowDiff);k++)
+					{
+						for (i=0;i<32;i++)
+						{
+							if (pieces[i].x==colStart && pieces[i].y==rowStart-k && pieces[i].dead_alive==ALIVE)
+								{
+									printf("there is a piece in the way");
+									return 0;
+								}
+						}
+					}
+				}
+			}
+		}
 
 			/*
 			//DO TESTOW
@@ -279,7 +356,6 @@ int validate_move()
 			printf("pieces[k].y: %d \n", pieces[k].y);
 			*/
 
-		}
 
 	}
 
