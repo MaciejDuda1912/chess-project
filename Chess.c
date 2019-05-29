@@ -212,11 +212,11 @@ int validate_move_format() {
 }
 
 // FUNKCJA SPRAWDZAJACA LEGALOSC RUCHOW DLA POSZCZEGOLNYCH TYPOW PIONKOW
-int validate_move(rowStart, rowEnd, colStart, colEnd)
+int validate_move(int rowStart, int rowEnd, int colStart, int colEnd)
 {
 	//wektory Y i X
-	int rowDiff = rowEnd - rowStart;
-	int colDiff = colEnd - colStart;
+	int rowDiff = rowStart - rowEnd;
+	int colDiff = colStart - colEnd;
 	
 	if (rowDiff==0 && colDiff==0)
 	{
@@ -276,25 +276,25 @@ int validate_move(rowStart, rowEnd, colStart, colEnd)
 				return 0;
 			}
 		}
-		//Wie¿e
+		//Wieï¿½e
 		else if ((pieces[k].y == rowStart && pieces[k].x == colStart) && pieces[k].type == ROOK && pieces[k].dead_alive==ALIVE)
 		{
 			if (rowDiff!=0 && colDiff!=0)
 			{
-				printf("rooks don't move like that");
+				printf("rooks don't move like that. \n");
 				return 0;
 			}
 			if (rowDiff==0)
 			{
 				if( colDiff>0)
 				{
-					for( int j=1; j<colDiff; j++)
+					for( int j=1; j<abs(colDiff); j++)
 					{
 						for (i=0;i<32;i++)
 						{
-							if (pieces[i].x==colStart+k && pieces[i].y==rowStart && pieces[i].dead_alive==ALIVE)
+							if (pieces[i].x==colStart-j && pieces[i].y==rowStart && pieces[i].dead_alive==ALIVE)
 								{
-									printf("there is a piece in the way");
+									printf("there is a piece in the way \n");
 									return 0;
 								}
 						}
@@ -306,9 +306,9 @@ int validate_move(rowStart, rowEnd, colStart, colEnd)
 					{
 						for (i=0;i<32;i++)
 						{
-							if (pieces[i].x==colStart-k && pieces[i].y==rowStart && pieces[i].dead_alive==ALIVE)
+							if (pieces[i].x==colStart+j && pieces[i].y==rowStart && pieces[i].dead_alive==ALIVE)
 								{
-									printf("there is a piece in the way");
+									printf("there is a piece in the way \n");
 									return 0;
 								}
 						}
@@ -319,13 +319,13 @@ int validate_move(rowStart, rowEnd, colStart, colEnd)
 			{
 				if( rowDiff>0)
 				{
-					for(int j=1;j<rowDiff;j++)
+					for(int j=1;j<abs(rowDiff);j++)
 					{
 						for (i=0;i<32;i++)
 						{
-							if (pieces[i].x==colStart && pieces[i].y==rowStart+k && pieces[i].dead_alive==ALIVE)
+							if (pieces[i].x==colStart && pieces[i].y==rowStart-j && pieces[i].dead_alive==ALIVE)
 								{
-									printf("there is a piece in the way");
+									printf("there is a piece in the way \n");
 									return 0;
 								}
 						}
@@ -337,7 +337,7 @@ int validate_move(rowStart, rowEnd, colStart, colEnd)
 					{
 						for (i=0;i<32;i++)
 						{
-							if (pieces[i].x==colStart && pieces[i].y==rowStart-k && pieces[i].dead_alive==ALIVE)
+							if (pieces[i].x == colStart && pieces[i].y==rowStart + j && pieces[i].dead_alive == ALIVE)
 								{
 									printf("there is a piece in the way");
 									return 0;
