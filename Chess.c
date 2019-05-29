@@ -215,8 +215,8 @@ int validate_move_format() {
 int validate_move(rowStart, rowEnd, colStart, colEnd)
 {
 	//wektory Y i X
-	int rowDiff = rowStart - rowEnd;
-	int colDiff = colStart - colEnd;
+	int rowDiff = rowEnd - rowStart;
+	int colDiff = colEnd - colStart;
 	
 	if (rowDiff==0 && colDiff==0)
 	{
@@ -288,7 +288,7 @@ int validate_move(rowStart, rowEnd, colStart, colEnd)
 			{
 				if( colDiff>0)
 				{
-					for(k=1;k<colDiff;k++)
+					for( int j=1; j<colDiff; j++)
 					{
 						for (i=0;i<32;i++)
 						{
@@ -302,7 +302,7 @@ int validate_move(rowStart, rowEnd, colStart, colEnd)
 				}
 				else
 				{
-					for(k=1;k<abs(colDiff);k++)
+					for(int j=1;j<abs(colDiff);j++)
 					{
 						for (i=0;i<32;i++)
 						{
@@ -319,7 +319,7 @@ int validate_move(rowStart, rowEnd, colStart, colEnd)
 			{
 				if( rowDiff>0)
 				{
-					for(k=1;k<rowDiff;k++)
+					for(int j=1;j<rowDiff;j++)
 					{
 						for (i=0;i<32;i++)
 						{
@@ -333,7 +333,7 @@ int validate_move(rowStart, rowEnd, colStart, colEnd)
 				}
 				else
 				{
-					for(k=1;k<abs(rowDiff);k++)
+					for(int j=1;j<abs(rowDiff);j++)
 					{
 						for (i=0;i<32;i++)
 						{
