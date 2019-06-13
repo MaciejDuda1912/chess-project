@@ -55,6 +55,7 @@ void print_chessboard() {
 	int flag = 0;
 
 	//system("cls"); // czyszczenie konsoli
+	printf("\n");
 
 	for (i = 0; i < 8; i++)
 	{
@@ -493,8 +494,8 @@ int validate_move(int rowStart, int rowEnd, int colStart, int colEnd)
 				printf("pieces[k].y: %d \n", pieces[k].y);
 			*/
 		}
-			
-		
+
+
 	}
 
 	return 1;
@@ -510,7 +511,7 @@ int validate_move_check(int rowStart, int rowEnd, int colStart, int colEnd)
 
 	if (rowDiff == 0 && colDiff == 0)
 	{
-		printf("you didn't move");
+		printf("You didn't move \n");
 		return 0;
 	}
 
@@ -676,115 +677,116 @@ int validate_move_check(int rowStart, int rowEnd, int colStart, int colEnd)
 			{
 				return 0;
 			}
-
-			// hetman
-			else if ((pieces[k].y == rowStart && pieces[k].x == colStart) && pieces[k].type == QUEEN && pieces[k].dead_alive == ALIVE)
+		}
+		// hetman
+		else if ((pieces[k].y == rowStart && pieces[k].x == colStart) && pieces[k].type == QUEEN && pieces[k].dead_alive == ALIVE)
+		{
+			if (rowDiff != 0 && colDiff != 0)
 			{
-				if (rowDiff != 0 && colDiff != 0)
+				if (rowDiff == 0 || abs(colDiff / rowDiff) != 1)
+					return 0;
+			}
+			else if (abs(colDiff / rowDiff) == 1)
+			{
+				for (i = 1; i < abs(colDiff); i++)
 				{
-					if (rowDiff == 0 || abs(colDiff / rowDiff) != 1)
-						return 0;
-				}
-				else if (abs(colDiff / rowDiff) == 1)
-				{
-					for (i = 1; i < abs(colDiff); i++)
+					for (j = 0; j < 32; j++)
 					{
-						for (j = 0; j < 32; j++)
+						if (colDiff > 0 && rowDiff > 0 && pieces[j].x == colStart - i && pieces[j].y == rowStart - i)
 						{
-							if (colDiff > 0 && rowDiff > 0 && pieces[j].x == colStart - i && pieces[j].y == rowStart - i)
-							{
-								return 0;
-							}
-							else if (colDiff > 0 && rowDiff < 0 && pieces[j].x == colStart - i && pieces[j].y == rowStart + i)
-							{
-								return 0;
-							}
-							else if (colDiff < 0 && rowDiff>0 && pieces[j].x == colStart + i && pieces[j].y == rowStart - i)
-							{
-								return 0;
-							}
-							else if (colDiff < 0 && rowDiff < 0 && pieces[j].x == colStart + i && pieces[j].y == rowStart + i)
-							{
-								return 0;
-							}
+							return 0;
+						}
+						else if (colDiff > 0 && rowDiff < 0 && pieces[j].x == colStart - i && pieces[j].y == rowStart + i)
+						{
+							return 0;
+						}
+						else if (colDiff < 0 && rowDiff>0 && pieces[j].x == colStart + i && pieces[j].y == rowStart - i)
+						{
+							return 0;
+						}
+						else if (colDiff < 0 && rowDiff < 0 && pieces[j].x == colStart + i && pieces[j].y == rowStart + i)
+						{
+							return 0;
 						}
 					}
 				}
-				else
+			}
+			else
+			{
+				if (rowDiff == 0)
 				{
-					if (rowDiff == 0)
+					if (colDiff > 0)
 					{
-						if (colDiff > 0)
+						for (j = 1; j < abs(colDiff); j++)
 						{
-							for (j = 1; j < abs(colDiff); j++)
+							for (i = 0; i < 32; i++)
 							{
-								for (i = 0; i < 32; i++)
+								if (pieces[i].x == colStart - j && pieces[i].y == rowStart && pieces[i].dead_alive == ALIVE)
 								{
-									if (pieces[i].x == colStart - j && pieces[i].y == rowStart && pieces[i].dead_alive == ALIVE)
-									{
-										return 0;
-									}
-								}
-							}
-						}
-						else
-						{
-							for (j = 1; j < abs(colDiff); j++)
-							{
-								for (i = 0; i < 32; i++)
-								{
-									if (pieces[i].x == colStart + j && pieces[i].y == rowStart && pieces[i].dead_alive == ALIVE)
-									{
-										return 0;
-									}
+									return 0;
 								}
 							}
 						}
 					}
 					else
 					{
-						if (rowDiff > 0)
+						for (j = 1; j < abs(colDiff); j++)
 						{
-							for (j = 1; j < abs(rowDiff); j++)
+							for (i = 0; i < 32; i++)
 							{
-								for (i = 0; i < 32; i++)
+								if (pieces[i].x == colStart + j && pieces[i].y == rowStart && pieces[i].dead_alive == ALIVE)
 								{
-									if (pieces[i].x == colStart && pieces[i].y == rowStart - j && pieces[i].dead_alive == ALIVE)
-									{
-										return 0;
-									}
-								}
-							}
-						}
-						else
-						{
-							for (j = 1; j < abs(rowDiff); j++)
-							{
-								for (i = 0; i < 32; i++)
-								{
-									if (pieces[i].x == colStart && pieces[i].y == rowStart + j && pieces[i].dead_alive == ALIVE)
-									{
-										return 0;
-									}
+									return 0;
 								}
 							}
 						}
 					}
 				}
-				/*
-					//DO TESTOW
-					printf("colStart: %d, colEnd: %d\n", colStart, colEnd);
-					printf("pieces[k].x: %d \n", pieces[k].x);
-					printf("rowStart: %d, rowEnd: %d\n", rowStart, rowEnd);
-					printf("pieces[k].y: %d \n", pieces[k].y);
-					*/
-
-
+				else
+				{
+					if (rowDiff > 0)
+					{
+						for (j = 1; j < abs(rowDiff); j++)
+						{
+							for (i = 0; i < 32; i++)
+							{
+								if (pieces[i].x == colStart && pieces[i].y == rowStart - j && pieces[i].dead_alive == ALIVE)
+								{
+									return 0;
+								}
+							}
+						}
+					}
+					else
+					{
+						for (j = 1; j < abs(rowDiff); j++)
+						{
+							for (i = 0; i < 32; i++)
+							{
+								if (pieces[i].x == colStart && pieces[i].y == rowStart + j && pieces[i].dead_alive == ALIVE)
+								{
+									return 0;
+								}
+							}
+						}
+					}
+				}
 			}
+			/*
+				//DO TESTOW
+				printf("colStart: %d, colEnd: %d\n", colStart, colEnd);
+				printf("pieces[k].x: %d \n", pieces[k].x);
+				printf("rowStart: %d, rowEnd: %d\n", rowStart, rowEnd);
+				printf("pieces[k].y: %d \n", pieces[k].y);
+			*/
 
-			return 1;
+
 		}
+
+		
 	}
+
+	return 1;
 }
 void moves(p, r, s, o)
 {
@@ -867,6 +869,7 @@ int main() {
 
 	do {
 		x = 0;
+		//system("cls");
 		print_chessboard();
 		if (move % 2 == 0)
 			printf("White's ");
@@ -890,7 +893,7 @@ int main() {
 				if (validate_move_check(pieces[k].y, pieces[15].y, pieces[k].x, pieces[15].x) == 1)
 				{
 					if (x == 0) {
-						printf("king is under attack");
+						printf("King is under attack!\n");
 						moves(rowEnd, rowStart, colEnd, colStart);
 						move--;
 						x = 1;
@@ -905,7 +908,7 @@ int main() {
 				if (validate_move_check(pieces[k].y, pieces[31].y, pieces[k].x, pieces[31].x) == 1)
 				{
 					if (x == 0) {
-						printf("king is under attack");
+						printf("King is under attack!\n");
 						moves(rowEnd, rowStart, colEnd, colStart);
 						move--;
 						x = 1;
